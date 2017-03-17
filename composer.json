@@ -1,0 +1,11 @@
+{
+  "name": "johnshopkins/aws4",
+  "description": "Signs and prepares requests using AWS Signature Version 4",
+  "license": "MIT",
+  "homepage": "https://github.com/johnshopkins/aws4",
+  "autoload": {
+    "psr-4" : {
+      "AWS4\\" : ["src/", "tests/"]
+    }
+  }
+}
