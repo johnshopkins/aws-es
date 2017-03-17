@@ -1,11 +1,11 @@
 {
-  "name": "johnshopkins/aws4",
-  "description": "Signs and prepares requests using AWS Signature Version 4",
+  "name": "johnshopkins/aws-es",
+  "description": "Interact with AWS Elasticsearch",
   "license": "MIT",
-  "homepage": "https://github.com/johnshopkins/aws4",
+  "homepage": "https://github.com/johnshopkins/aws-es",
   "autoload": {
     "psr-4" : {
-      "AWS4\\" : ["src/", "tests/"]
+      "AWSElasticSearch\\" : ["src/", "tests/"]
     }
   },
   "require-dev": {
