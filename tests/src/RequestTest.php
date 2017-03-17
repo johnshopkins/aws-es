@@ -1,6 +1,6 @@
 <?php
 
-namespace AWS4;
+namespace AWSElasticsearch;
 
 use \phpmock\phpunit\PHPMock;
 

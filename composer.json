@@ -5,7 +5,7 @@
   "homepage": "https://github.com/johnshopkins/aws-es",
   "autoload": {
     "psr-4" : {
-      "AWSElasticSearch\\" : ["src/", "tests/"]
+      "AWSElasticsearch\\" : ["src/", "tests/"]
     }
   },
   "require-dev": {

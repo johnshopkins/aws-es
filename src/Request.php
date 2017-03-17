@@ -1,6 +1,6 @@
 <?php
 
-namespace AWS4;
+namespace AWSElasticsearch;
 
 class Request
 {
