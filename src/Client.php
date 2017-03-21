@@ -50,6 +50,11 @@ class Client
     return "http://" . $this->host . $path;
   }
 
+  /**
+   * Index a document
+   * @param  array $params Parameters (index, type, id, body)
+   * @return object        Response
+   */
   public function index($params = array())
   {
     $path = $this->buildEndpoint($params);
@@ -106,6 +111,28 @@ class Client
     $response = $this->http->delete($url, array(), $headers);
 
     return $response->getStatusCode() == 200;
+  }
+
+  /**
+   * Search and index or a type within an index
+   * @param  array $params Parameters (index, type, body)
+   * @return object        Response
+   */
+  public function search($params)
+  {
+    $path = $this->buildEndpoint($params) . "/_search";
+    $body = $this->encodeBody($params["body"]);
+
+    // get AWS headers
+    $options = $this->getRequestOptions("GET", $path, $body);
+    $request = new Request($options, $this->credentials);
+    $headers = $request->sign()->getHeaders();
+
+    // make request
+    $url = $this->getRequestUrl($path);
+    $response = $this->http->get($url, array(), $headers, array("body" => $body));
+    $body = $response->getBody();
+    return $body->hits;
   }
 
   public function indices()
