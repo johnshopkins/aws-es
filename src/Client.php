@@ -36,12 +36,13 @@ class Client
     return json_encode($body);
   }
 
-  protected function getRequestOptions($method, $path, $body = "")
+  protected function getRequestOptions($method, $path, $body = "", $query = array())
   {
     return array_merge($this->defaultRequestOptions, array(
       "method" => $method,
       "path" => $path,
-      "body" => $body
+      "body" => $body,
+      "query" => $query
     ));
   }
 
@@ -115,24 +116,30 @@ class Client
 
   /**
    * Search and index or a type within an index
-   * @param  array $params Parameters (index, type, body)
+   * @param  array $params Parameters (index, type, body, from, offset)
    * @return object        Response
    */
   public function search($params)
   {
     $path = $this->buildEndpoint($params) . "/_search";
+
+    $query = array(
+      "from" => isset($params["from"]) ? $params["from"] : 0,
+      "size" => isset($params["size"]) ? $params["size"] : 10
+    );
+
     $body = $this->encodeBody($params["body"]);
 
     // get AWS headers
-    $options = $this->getRequestOptions("GET", $path, $body);
+    $options = $this->getRequestOptions("GET", $path, $body, $query);
     $request = new Request($options, $this->credentials);
     $headers = $request->sign()->getHeaders();
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->get($url, array(), $headers, array("body" => $body));
-    $body = $response->getBody();
-    return $body->hits;
+    $response = $this->http->get($url, $query, $headers, array("body" => $body));
+
+    return $response->getBody();
   }
 
   public function indices()
