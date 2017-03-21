@@ -108,7 +108,7 @@ class Request
 
     // get all parts
     $method = $this->options["method"];
-    $path = $this->options["path"];
+    $path = $this->encodePath($this->options["path"]);
     $query = $this->createQueryString($this->options["query"]);
     $headers = $this->createHeaderString($allheaders);
     $this->signedHeaders = $this->createSignedHeaderString($allheaders); // save to $this as it will be used later
@@ -117,6 +117,21 @@ class Request
     $canonical = "{$method}\n{$path}\n{$query}\n{$headers}\n{$this->signedHeaders}\n{$body}";
 
     return hash($this->algo, $canonical);
+  }
+
+  /**
+   * Encodes parts of path between slashes
+   * @param  string $path Request path
+   * @return string Revised request path
+   */
+  protected function encodePath($path)
+  {
+    $parts = explode("/", $path);
+    $parts = array_map(function ($part) {
+      return urlencode($part);
+    }, $parts);
+
+    return implode("/", $parts);
   }
 
   protected function createQueryString($query)
