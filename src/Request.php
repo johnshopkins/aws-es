@@ -56,7 +56,7 @@ class Request
     // create some time formats
     $now = time();
     $this->date = gmdate("Ymd", $now);
-    $this->datetime = gmdate("Ymd", $now) . "T" . gmdate("Gis", $now) . "Z";
+    $this->datetime = gmdate("Ymd", $now) . "T" . gmdate("His", $now) . "Z";
 
     // create some default headers
     $this->addDefaultHeaders();
