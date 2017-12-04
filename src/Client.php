@@ -68,7 +68,10 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->put($url, array(), $headers, array("body" => $body));
+    $response = $this->http->put($url, [
+      'headers' => $headers,
+      'body' => $body
+    ]);
     return $response->getBody();
   }
 
@@ -88,7 +91,7 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->head($url, array(), $headers);
+    $response = $this->http->head($url, ['headers' => $headers]);
 
     return $response->getStatusCode() == 200;
   }
@@ -109,7 +112,7 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->delete($url, array(), $headers);
+    $response = $this->http->delete($url, ['headers' => $headers]);
 
     return $response->getStatusCode() == 200;
   }
@@ -137,7 +140,11 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->get($url, $query, $headers, array("body" => $body));
+    $response = $this->http->get($url, [
+      'query' => $query,
+      'headers' => $headers,
+      'body' => $body
+    ]);
 
     return $response->getBody();
   }

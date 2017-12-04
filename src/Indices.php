@@ -50,7 +50,7 @@ class Indices
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->get($url, array(), $headers);
+    $response = $this->http->get($url, ['headers' => $headers]);
     return $response->getBody();
   }
 
@@ -66,7 +66,10 @@ class Indices
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->post($url, array(), $headers, array("body" => $body));
+    $response = $this->http->post($url, [
+      'headers' => $headers,
+      'body' => $body
+    ]);
     return $response->getBody();
   }
 
@@ -82,7 +85,10 @@ class Indices
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->put($url, array(), $headers, array("body" => $body));
+    $response = $this->http->put($url, [
+      'headers' => $headers,
+      'body' => $body
+    ]);
     return $response->getBody();
   }
 
@@ -97,7 +103,7 @@ class Indices
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->delete($url, array(), $headers);
+    $response = $this->http->delete($url, ['headers' => $headers]);
 
     return $response->getStatusCode() == 200;
   }
