@@ -68,7 +68,10 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->put($url, array(), $headers, array("body" => $body));
+    $response = $this->http->put($url, [
+      'headers' => $headers,
+      'body' => $body
+    ]);
     return $response->getBody();
   }
 
@@ -88,7 +91,7 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->head($url, array(), $headers);
+    $response = $this->http->head($url, ['headers' => $headers]);
 
     return $response->getStatusCode() == 200;
   }
@@ -109,7 +112,7 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->delete($url, array(), $headers);
+    $response = $this->http->delete($url, ['headers' => $headers]);
 
     return $response->getStatusCode() == 200;
   }
@@ -137,7 +140,38 @@ class Client
 
     // make request
     $url = $this->getRequestUrl($path);
-    $response = $this->http->get($url, $query, $headers, array("body" => $body));
+    $response = $this->http->get($url, [
+      'query' => $query,
+      'headers' => $headers,
+      'body' => $body
+    ]);
+
+    return $response->getBody();
+  }
+
+  public function analyze($params)
+  {
+    $path = $this->buildEndpoint($params) . "/_analyze";
+
+    $body = $this->encodeBody([
+      'analyzer' => isset($params['analyzer']) ? $params['analyzer'] : 'default',
+      'text' => $params['text']
+    ]);
+
+    $query = [];
+
+    // get AWS headers
+    $options = $this->getRequestOptions("POST", $path, $body, $query);
+    $request = new Request($options, $this->credentials);
+    $headers = $request->sign()->getHeaders();
+
+    // make request
+    $url = $this->getRequestUrl($path);
+    $response = $this->http->post($url, [
+      'query' => $query,
+      'headers' => $headers,
+      'body' => $body
+    ]);
 
     return $response->getBody();
   }
