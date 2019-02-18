@@ -149,6 +149,33 @@ class Client
     return $response->getBody();
   }
 
+  public function analyze($params)
+  {
+    $path = $this->buildEndpoint($params) . "/_analyze";
+
+    $body = $this->encodeBody([
+      'analyzer' => isset($params['analyzer']) ? $params['analyzer'] : 'default',
+      'text' => $params['text']
+    ]);
+
+    $query = [];
+
+    // get AWS headers
+    $options = $this->getRequestOptions("POST", $path, $body, $query);
+    $request = new Request($options, $this->credentials);
+    $headers = $request->sign()->getHeaders();
+
+    // make request
+    $url = $this->getRequestUrl($path);
+    $response = $this->http->post($url, [
+      'query' => $query,
+      'headers' => $headers,
+      'body' => $body
+    ]);
+
+    return $response->getBody();
+  }
+
   public function indices()
   {
     return new Indices($this->http, $this->host, $this->credentials, $this->region);
