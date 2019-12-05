@@ -48,7 +48,7 @@ class Client
 
   protected function getRequestUrl($path)
   {
-    return "http://" . $this->host . $path;
+    return $this->host . $path;
   }
 
   /**
