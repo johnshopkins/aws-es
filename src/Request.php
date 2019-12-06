@@ -51,6 +51,10 @@ class Request
   public function __construct($options = array(), $credentials = array())
   {
     $this->options = array_merge($this->options, $options);
+    if (isset($this->options['host'])) {
+      $this->options['host'] = preg_replace('/^http(s):\/\//', '', $this->options['host']);
+    }
+    
     $this->credentials = $credentials;
 
     // create some time formats
